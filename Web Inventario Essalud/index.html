@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inventario de Equipos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <span class="brand-mark">IE</span>
+    <span class="brand-text">Inventario de Equipos</span>
+  </div>
+  <button id="btnConfig" class="icon-btn" title="Configuración" aria-label="Configuración">⚙️</button>
+</header>
+
+<!-- NAV DESKTOP LATERAL -->
+<nav class="side-nav" id="sideNav">
+  <button class="nav-item active" data-view="registrar">➕ <span>Registrar equipo</span></button>
+  <button class="nav-item" data-view="consultar">🔍 <span>Consultar equipos</span></button>
+</nav>
+
+<main class="content">
+
+  <!-- TOAST -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- ================= VISTA: REGISTRAR ================= -->
+  <section id="view-registrar" class="view active">
+    <h1 class="view-title">Registrar equipo</h1>
+    <p class="view-sub">Completa los datos del equipo. Puedes escanear los códigos con la cámara.</p>
+
+    <form id="formEquipo" class="card form-card" autocomplete="off">
+
+      <div class="field">
+        <label for="codigoPatrimonial">Código patrimonial *</label>
+        <div class="scan-field">
+          <input type="text" id="codigoPatrimonial" placeholder="Ej. PAT-00125" required>
+          <button type="button" class="scan-btn" data-target="codigoPatrimonial" data-mode="both" title="Escanear">📷</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="tipoEquipo">Tipo de equipo *</label>
+        <input list="listaTipos" id="tipoEquipo" placeholder="Selecciona o escribe" required>
+        <datalist id="listaTipos"></datalist>
+      </div>
+
+      <div class="field">
+        <label for="codigoSerie">Código de serie *</label>
+        <div class="scan-field">
+          <input type="text" id="codigoSerie" placeholder="Ej. SN123456789" required>
+          <button type="button" class="scan-btn" data-target="codigoSerie" data-mode="both" title="Escanear">📷</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="marca">Marca *</label>
+        <input list="listaMarcas" id="marca" placeholder="Selecciona o escribe" required>
+        <datalist id="listaMarcas"></datalist>
+      </div>
+
+      <div class="field">
+        <label for="modelo">Modelo *</label>
+        <input list="listaModelos" id="modelo" placeholder="Selecciona o escribe" required>
+        <datalist id="listaModelos"></datalist>
+        <small class="hint">Se sugieren modelos según el tipo y la marca elegidos.</small>
+      </div>
+
+      <div class="field">
+        <label for="estado">Estado *</label>
+        <select id="estado" required>
+          <option value="" disabled selected>Selecciona un estado</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="ubicacion">Ubicación</label>
+        <input type="text" id="ubicacion" placeholder="Ej. Segundo piso, Área de Sistemas">
+      </div>
+
+      <div class="form-actions">
+        <button type="button" id="btnLimpiarForm" class="btn btn-ghost">🧹 Limpiar</button>
+        <button type="submit" class="btn btn-primary">➕ Registrar equipo</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ================= VISTA: CONSULTAR ================= -->
+  <section id="view-consultar" class="view">
+    <h1 class="view-title">Consultar equipos</h1>
+    <p class="view-sub">Busca por código o aplica filtros para encontrar equipos registrados.</p>
+
+    <div class="card">
+      <div class="search-row">
+        <div class="field">
+          <label for="buscarPatrimonial">Código patrimonial</label>
+          <div class="scan-field">
+            <input type="text" id="buscarPatrimonial" placeholder="Ej. PAT-00125">
+            <button type="button" class="scan-btn" data-target="buscarPatrimonial" data-mode="both" title="Escanear">📷</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="buscarSerie">Código de serie</label>
+          <div class="scan-field">
+            <input type="text" id="buscarSerie" placeholder="Ej. SN123456789">
+            <button type="button" class="scan-btn" data-target="buscarSerie" data-mode="both" title="Escanear">📷</button>
+          </div>
+        </div>
+      </div>
+      <button id="btnBuscarCodigo" class="btn btn-primary full">🔎 Buscar</button>
+    </div>
+
+    <details class="card filters-card">
+      <summary>Filtros</summary>
+      <div class="filters-grid">
+        <div class="field">
+          <label for="filtroTipo">Tipo de equipo</label>
+          <select id="filtroTipo"><option value="">Todos</option></select>
+        </div>
+        <div class="field">
+          <label for="filtroMarca">Marca</label>
+          <select id="filtroMarca"><option value="">Todas</option></select>
+        </div>
+        <div class="field">
+          <label for="filtroModelo">Modelo</label>
+          <select id="filtroModelo"><option value="">Todos</option></select>
+        </div>
+        <div class="field">
+          <label for="filtroEstado">Estado</label>
+          <select id="filtroEstado"><option value="">Todos</option></select>
+        </div>
+        <div class="field">
+          <label for="filtroUbicacion">Ubicación</label>
+          <input type="text" id="filtroUbicacion" placeholder="Ej. Almacén">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button id="btnLimpiarFiltros" class="btn btn-ghost">🧹 Limpiar filtros</button>
+        <button id="btnAplicarFiltros" class="btn btn-primary">Aplicar filtros</button>
+      </div>
+    </details>
+
+    <div class="results-header">
+      <span id="resultsCount" class="results-count"></span>
+      <div class="export-actions">
+        <button id="btnExportExcel" class="btn btn-outline" disabled>📊 Excel</button>
+        <button id="btnExportPdf" class="btn btn-outline" disabled>📄 PDF</button>
+      </div>
+    </div>
+
+    <div id="resultsWrap"></div>
+  </section>
+
+</main>
+
+<!-- NAV MÓVIL INFERIOR -->
+<nav class="bottom-nav">
+  <button class="nav-item active" data-view="registrar">➕<span>Registrar</span></button>
+  <button class="nav-item" data-view="consultar">🔍<span>Consultar</span></button>
+</nav>
+
+<!-- MODAL: CONFIRMAR REGISTRO -->
+<div id="modalConfirm" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>¿Deseas registrar este equipo?</h2>
+    <div id="confirmDetails" class="confirm-details"></div>
+    <div class="form-actions">
+      <button id="btnCancelConfirm" class="btn btn-ghost">Cancelar</button>
+      <button id="btnOkConfirm" class="btn btn-primary">Registrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DETALLE DE EQUIPO -->
+<div id="modalDetalle" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>Detalle del equipo</h2>
+    <div id="detalleContent" class="confirm-details"></div>
+    <div class="form-actions">
+      <button id="btnCerrarDetalle" class="btn btn-primary full">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ESCÁNER -->
+<div id="modalScanner" class="modal-overlay hidden">
+  <div class="modal modal-scanner">
+    <div class="scanner-tabs">
+      <button class="scanner-tab active" data-type="barcode">Código de barras</button>
+      <button class="scanner-tab" data-type="ocr">Texto / OCR</button>
+    </div>
+    <div id="scannerViewport" class="scanner-viewport">
+      <div id="scannerVideoWrap"></div>
+      <div id="scannerStatus" class="scanner-status">Solicitando acceso a la cámara…</div>
+    </div>
+    <div id="scannerResultBox" class="scanner-result hidden">
+      <p>Resultado detectado:</p>
+      <input type="text" id="scannerResultInput">
+      <div class="form-actions">
+        <button id="btnScanRetry" class="btn btn-ghost">Reintentar</button>
+        <button id="btnScanUse" class="btn btn-primary">Usar este valor</button>
+      </div>
+    </div>
+    <button id="btnCloseScanner" class="btn btn-ghost full">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL: CONFIGURACIÓN -->
+<div id="modalConfig" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>Configuración</h2>
+    <div class="field">
+      <label for="apiUrlInput">URL de Google Apps Script (Web App)</label>
+      <input type="text" id="apiUrlInput" placeholder="https://script.google.com/macros/s/XXXX/exec">
+      <small class="hint">Se guarda en este navegador. También puedes fijarla en js/api.js.</small>
+    </div>
+    <div class="form-actions">
+      <button id="btnCerrarConfig" class="btn btn-ghost">Cerrar</button>
+      <button id="btnGuardarConfig" class="btn btn-primary">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIBRERÍAS EXTERNAS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+
+<!-- APP -->
+<script src="js/api.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/scanner.js"></script>
+<script src="js/export.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
