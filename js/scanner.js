@@ -134,7 +134,7 @@ const Scanner = (() => {
     try {
       ocrStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
       video.srcObject = ocrStream;
-      setStatus("Encuadra el texto o número dentro del recuadro y presiona «Capturar».");
+      //setStatus("Encuadra el texto o número dentro del recuadro y presiona «Capturar».");
       addCaptureButton(video);
     } catch (err) {
       setStatus("No se pudo acceder a la cámara. Verifica los permisos o escribe el texto manualmente.");
